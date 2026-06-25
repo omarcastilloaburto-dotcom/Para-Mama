@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños, Mamá! ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 15px;
+            position: relative;
+        }
+
+        /* Contenedor de corazones de fondo */
+        #contenedor-corazones {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .corazon-flotante {
+            position: absolute;
+            bottom: -50px;
+            font-size: 20px;
+            color: #fb6f92;
+            opacity: 0.6;
+            animation: subir 6s linear infinite;
+        }
+
+        @keyframes subir {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Control de pantallas activas */
+        .seccion {
+            display: none;
+            width: 100%;
+            max-width: 430px;
+            padding: 10px;
+            text-align: center;
+            z-index: 5;
+        }
+
+        .seccion.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        button {
+            background: linear-gradient(135deg, #fb6f92 0%, #ff5c8a 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(251, 111, 146, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 25px;
+            outline: none;
+        }
+
+        button:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 12px 25px rgba(251, 111, 146, 0.6);
+        }
+
+        button:active {
+            transform: scale(0.98) translateY(0);
+        }
+
+        .tarjeta-inicio {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 40px 25px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(251, 111, 146, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            width: 100%;
+        }
+
+        .titulo-cumple {
+            font-family: 'Caveat', cursive;
+            font-size: 3.2rem;
+            color: #ff477e;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.02);
+        }
+
+        /* Contenedor del enorme 34 flotante */
+        .edad-contenedor {
+            position: relative;
+            display: inline-block;
+            margin: 15px 0;
+        }
+
+        .numero-edad {
+            font-size: 8.5rem;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(45deg, #ff477e, #ff85a1, #fb6f92);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 5px 8px rgba(251, 111, 146, 0.25));
+            animation: flotar 3s ease-in-out infinite;
+        }
+
+        .subtitulo-inicio {
+            color: #5c5c5c;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        .tarjeta-carrusel {
+            background: white;
+            padding: 22px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 114%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .indicador-progreso {
+            background-color: #ffe5ec;
+            color: #ff477e;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .marco-polaroid {
+            width: 100%;
+            height: 338px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.04);
+            background-color: #faf9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #f0edf0;
+        }
+
+        .marco-polaroid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease-in-out;
+            opacity: 0;
+        }
+
+        .texto-dedicatoria {
+            font-size: 1.1rem;
+            color: #4f4f4f;
+            margin-top: 20px;
+            min-height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 8px;
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .contenedor-sobre {
+            position: relative;
+            height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .sobre {
+            position: relative;
+            width: 290px;
+            height: 190px;
+            background-color: #ffb3c1;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            margin-top: 50px;
+        }
+
+        /* Solapa superior del sobre */
+        .sobre::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 0;
+            border-left: 145px solid transparent;
+            border-right: 145px solid transparent;
+            border-bottom: 100px solid #ffb3c1;
+            transform-origin: bottom;
+            transition: transform 0.5s ease-in-out, z-index 0.5s;
+            z-index: 3;
+        }
+
+        /* Carta dentro del sobre */
+        .carta {
+            position: absolute;
+            background: #fffdf9;
+            width: 90%;
+            height: 90%;
+            bottom: 5px;
+            left: 5%;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 2;
+            overflow-y: auto;
+            text-align: left;
+            line-height: 1.6;
+            color: #3d3d3d;
+        }
+
+        .carta h3 {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: #ff477e;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #ffd1dc;
+            padding-bottom: 5px;
+        }
+
+        .carta p {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Animaciones para la apertura del sobre */
+        .sobre.abierto {
+            transform: translateY(60px);
+        }
+
+        .sobre.abierto::before {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .sobre.abierto .carta {
+            transform: translateY(-165px) scale(1.1);
+            height: 250px;
+            z-index: 5;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+        }
+
+        .instruccion-sobre {
+            margin-top: 45px;
+            color: #ff477e;
+            font-weight: 700;
+            font-size: 1.05rem;
+            animation: palpitar 1.5s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes palpitar {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor para el efecto de corazones flotantes -->
+    <div id="contenedor-corazones"></div>
+
+    <div id="pantalla-inicio" class="seccion active">
+        <div class="tarjeta-inicio">
+            <h1 class="titulo-cumple">Feliz Cumpleaños,<br>Mami 🎂</h1>
+            
+            <div class="edad-contenedor">
+                <div class="numero-edad">34</div>
+            </div>
+            
+            <p class="subtitulo-inicio">
+                Espero te guste mami, no es mucho pero de verdad es con todo mi cariño, siempre has sido las mejor, siempre has estado ahi para mi y de verdad te lo agradezco, espero disfrutes tu dia ❤️
+            </p>
+            
+            <button id="btn-comenzar">Abre tu regalo</button>
+        </div>
+    </div>
+
+    <div id="pantalla-fotos" class="seccion">
+        <div class="tarjeta-carrusel">
+            <span id="contador" class="indicador-progreso">Recuerdo 1 de 21</span>
+            
+            <div class="marco-polaroid">
+                <!-- Se cargará la imagen correspondiente dinámicamente -->
+                <img id="foto-recuerdo" src="" alt="Nuestro Recuerdo" style="opacity: 0;">
+            </div>
+            
+            <p id="texto-recuerdo" class="texto-dedicatoria">Cargando tus recuerdos hermosos...</p>
+            
+            <button id="btn-siguiente">Siguiente recuerdo ➡️</button>
+        </div>
+    </div>
+
+    <div id="pantalla-sobre" class="seccion">
+        <div class="contenedor-sobre">
+            <div class="sobre" id="sobre">
+                <div class="carta">
+                    <h3>Para la cumpleañera mas hermosa:</h3>
+                    <p id="texto-carta">
+                        ¡Feliz cumpleaños Mami! espero puedas disfrutar tu dia, le agradezco mucho a Dios porque permitio
+                        que tu fueras mi mama porque me dio a la mejor mamá del mundo, la que siempre me apoya, la que siempre quiere lo mejor para mi,
+                        la que siempre va a estar ahi, de verdad perdoname por tantas cosas que he hecho y que te han decepcionado, yo lo que mas quiero 
+                        es que tu te sientas orgullosa de mi y que estes feliz de como es tu hijo, siempre cuenta conmigo, siempre estare ahi para ti como tu lo estas para mi.
+                        Te Amo Mucho Mami ❤️
+                    </p>
+                </div>
+            </div>
+            <p class="instruccion-sobre">Abre la carta</p>
+        </div>
+    </div>
+
+    <script>
+        // Arreglo completo con las frases dedicadas a cada una de tus 21 fotos
+        const recuerdos = [
+            { foto: "foto1.jpeg", texto: "¡Feliz cumpleaños a la mamá más increíble! Hoy celebramos tu vida. 🎉" },
+            { foto: "foto2.jpeg", texto: "Gracias por siempre estar ahi para mi." },
+            { foto: "foto3.jpeg", texto: "Solo quiero que este orgullosa de nosotros, de tus hijos." },
+            { foto: "foto4.jpeg", texto: "Gracias por tu paciencia y tus consejos. " },
+            { foto: "foto5.jpeg", texto: "Por enseñarme a ser fuerte y a nunca rendirme." },
+            { foto: "foto6.jpeg", texto: "Eres mi guía, mi ejemplo a seguir y mi mayor orgullo en esta vida. " },
+            { foto: "foto7.jpeg", texto: "No me imagino una vida sin ti, Te Amo Mami. " },
+            { foto: "foto8.jpeg", texto: "Al final del dia tu eres la unica que me coprende y con la unica que puedo hablar. 🫂" },
+            { foto: "foto9.jpeg", texto: "Perdon por no ser un buen hijo para ustedes. " },
+            { foto: "foto10.jpeg", texto: "Tu llenas de esperanza y alegria esta casa, gracias por eso" },
+            { foto: "foto11.jpeg", texto: "Le agradezco a Dios cada día por haberme dado a la mejor mamá. " },
+            { foto: "foto12.jpeg", texto: "Eres el corazón y el motor de nuestra familia. " },
+            { foto: "foto13.jpeg", texto: "Gracias por cada uno de tus esfuerzos que haces por nosotros." },
+            { foto: "foto14.jpeg", texto: "Gracias por cuidarnos siempre a pesar de hacerte enojar. " },
+            { foto: "foto15.jpeg", texto: "Gracias por todos los momentos de felicidad que nos has hecho pasar. " },
+            { foto: "foto16.jpeg", texto: "Hoy celebramos con alegria otro año mas que te podemos tener." },
+            { foto: "foto17.jpeg", texto: "Que Dios siempre te de alegria en tu corazon tan hermoso mami." },
+            { foto: "foto18.jpeg", texto: "Eres la mejor mamá del mundo y no lo pienso discutir. " },
+            { foto: "foto19.jpeg", texto: "Gracias por ser mi consejera, mi protectora y mi gran alegria. " },
+            { foto: "foto20.jpeg", texto: "Que Dios nos permita estar siempre juntos, te quiero mami" },
+            { foto: "foto21.jpeg", texto: "Y para terminar este viaje de recuerdos... te dejé un regalito final abajo. 👇" }
+        ];
+
+        let indiceActual = 0;
+
+        // Captura de elementos del DOM
+        const btnComenzar = document.getElementById("btn-comenzar");
+        const btnSiguiente = document.getElementById("btn-siguiente");
+        const sobre = document.getElementById("sobre");
+
+        const pantallaInicio = document.getElementById("pantalla-inicio");
+        const pantallaFotos = document.getElementById("pantalla-fotos");
+        const pantallaSobre = document.getElementById("pantalla-sobre");
+
+        const imgRecuerdo = document.getElementById("foto-recuerdo");
+        const txtRecuerdo = document.getElementById("texto-recuerdo");
+        const contador = document.getElementById("contador");
+
+        function crearCorazon() {
+            const contenedor = document.getElementById("contenedor-corazones");
+            if (!contenedor) return;
+            
+            const corazon = document.createElement("div");
+            corazon.classList.add("corazon-flotante");
+            
+            // Iconos de corazones surtidos
+            const tiposCorazon = ["❤️", "💖", "💕", "🌸", "✨"];
+            corazon.innerText = tiposCorazon[Math.floor(Math.random() * tiposCorazon.length)];
+            
+            // Posición aleatoria, tamaño aleatorio y retraso
+            corazon.style.left = Math.random() * 100 + "vw";
+            const tamano = Math.random() * 20 + 15; // Entre 15px y 35px
+            corazon.style.fontSize = tamano + "px";
+            
+            const duracion = Math.random() * 4 + 4; // Entre 4 y 8 segundos
+            corazon.style.animationDuration = duracion + "s";
+            
+            contenedor.appendChild(corazon);
+            
+            // Eliminar elemento al terminar animación
+            setTimeout(() => {
+                corazon.remove();
+            }, duracion * 1000);
+        }
+
+        // Generar corazones periódicamente
+        setInterval(crearCorazon, 350);
+
+        // 1. Iniciar el viaje de fotos
+        btnComenzar.addEventListener("click", () => {
+            pantallaInicio.classList.remove("active");
+            pantallaFotos.classList.add("active");
+            mostrarRecuerdo();
+        });
+
+        // 2. Función para renderizar el recuerdo con transición suave
+        function mostrarRecuerdo() {
+            imgRecuerdo.style.opacity = 0;
+            
+            setTimeout(() => {
+                imgRecuerdo.src = recuerdos[indiceActual].foto;
+                txtRecuerdo.innerText = recuerdos[indiceActual].texto;
+                contador.innerText = `Recuerdo ${indiceActual + 1} de ${recuerdos.length}`;
+                imgRecuerdo.style.opacity = 1;
+            }, 250);
+        }
+
+        // 3. Control del botón "Siguiente"
+        btnSiguiente.addEventListener("click", () => {
+            indiceActual++;
+            
+            if (indiceActual < recuerdos.length) {
+                mostrarRecuerdo();
+            } else {
+                pantallaFotos.classList.remove("active");
+                pantallaSobre.classList.add("active");
+            }
+        });
+
+        // 4. Abrir y cerrar la carta dentro del sobre interactivo
+        sobre.addEventListener("click", () => {
+            sobre.classList.toggle("abierto");
+        });
+    </script>
+</body>
+</html>
